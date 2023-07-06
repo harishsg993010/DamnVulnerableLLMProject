@@ -9,6 +9,7 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 3. Run Replit and choose 1 for training and then Enter 3  for CTF Mode
 4. Make console to spill flags and secrets in text and DM me SS on twitter @CoderHarish for verification
 5. You can also read Writeup included in bottom for more challenges
+6. You can also check txt files in training folder for flags and secrets strings given that main goal of ctf is prompt injection
 
 
 # Set Up
