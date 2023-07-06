@@ -1,6 +1,6 @@
 # DamnVulnerableLLMProject
 
-This project is designed for Security Researchers to enhance their LLM hacking skills and for LLM Companies to secure their AI model and System against attackers
+This project is designed for Security Researchers to enhance their LLM hacking skills and for LLM Companies to secure their AI model and System against attackers and also consider reading disclaimer before using tool for learning attacks against LLM
 
 # CTF Insructions
 
