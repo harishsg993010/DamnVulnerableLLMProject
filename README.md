@@ -40,6 +40,30 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 
 https://medium.com/@harishhacker3010/art-of-hacking-llm-apps-a22cf60a523b
 
+# Disclaimer:
+
+The DamnVulnerableLLMProject is an educational project designed for security researchers to enhance their skills in identifying and addressing vulnerabilities in LLM (Language Model) applications. It also aims to assist LLM companies in securing their AI models and systems against potential attackers.
+
+Please note that engaging with the DamnVulnerableLLMProject carries inherent risks. This project deliberately incorporates vulnerable components and provides opportunities for participants to exploit them. It is crucial to exercise caution and ethical behavior while participating in any activities related to this project.
+
+By accessing and using the DamnVulnerableLLMProject, you acknowledge and agree to the following:
+
+Ethical Use: You agree to use the DamnVulnerableLLMProject solely for educational purposes, ethical hacking, and research purposes. It is strictly prohibited to exploit vulnerabilities discovered in this project against any real-world applications or systems without proper authorization.
+
+Legal Compliance: You are solely responsible for ensuring that your participation in the DamnVulnerableLLMProject complies with all applicable laws, regulations, and guidelines in your jurisdiction. OpenAI, the creators of the model, and the authors of the DamnVulnerableLLMProject disclaim any liability for any illegal or unauthorized activities conducted by participants.
+
+Responsible Disclosure: If you discover any vulnerabilities or potential security issues during your participation in the DamnVulnerableLLMProject, it is strongly recommended that you responsibly disclose them to the project maintainers or the relevant parties. Do not publicly disclose or exploit the vulnerabilities without proper authorization.
+
+No Warranty: The DamnVulnerableLLMProject is provided on an "as-is" basis without any warranties or guarantees of any kind, whether expressed or implied. The authors and maintainers of the project disclaim any liability for any damages or losses incurred during your participation.
+
+Personal Responsibility: You acknowledge that your participation in the DamnVulnerableLLMProject is entirely voluntary and at your own risk. You are solely responsible for any actions you take and the consequences that may arise from them.
+
+Remember, the primary objective of the DamnVulnerableLLMProject is to enhance cybersecurity knowledge and promote responsible and ethical hacking practices. Always act in accordance with applicable laws and guidelines, and respect the privacy and security of others.
+
+If you do not agree with any part of this disclaimer or are uncertain about your rights and responsibilities, it is recommended that you refrain from participating in the DamnVulnerableLLMProject.
+
+
+
 # Credit
 
 base code based on the [Amjad Masad Chat bot](https://ai.repl.page) by IronCladDev on Replit
