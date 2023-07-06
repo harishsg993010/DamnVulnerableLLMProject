@@ -11,6 +11,16 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 5. Click **Run**, select option `1`
 6. To chat with the bot, once you've one the training, select option `2`
 
+# Screenshots
+[![Damn-Vulnerable-Creditcard.png](https://i.postimg.cc/DZX3K70V/Damn-Vulnerable-Creditcard.png)](https://postimg.cc/HcdhwDb3)
+
+[![Damnvulnerable-SSRF.png](https://i.postimg.cc/KznpNj4Y/Damnvulnerable-SSRF.png)](https://postimg.cc/2bSxjzQp)
+
+[![Vulnerable-LLM.png](https://i.postimg.cc/RFQGtYb6/Vulnerable-LLM.png)](https://postimg.cc/dk38P5Fw)
+
+[![Damnvulnerable-LLM.png](https://i.postimg.cc/FK0xtqvW/Damnvulnerable-LLM.png)](https://postimg.cc/062SDVbD)
+
+
 # OWASP top 10 LLM Vulnerabilities in this application
 
 1. Prompt injection
