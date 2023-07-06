@@ -25,5 +25,5 @@ https://medium.com/@harishhacker3010/art-of-hacking-llm-apps-a22cf60a523b
 
 # Credit
 
-All based on the [Amjad Masad Chat bot](https://ai.repl.page) by IronCladDev on Replit
+base code based on the [Amjad Masad Chat bot](https://ai.repl.page) by IronCladDev on Replit
 For more information on how this works, check out [Zahid Khawaja's Tutorial](https://replit.com/@zahidkhawaja/Replit-Assistant?v=1).
