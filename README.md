@@ -6,15 +6,14 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 
 1. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
 2. Make up and `API_KEY` for the JSON API, this can just be something like a password if you'd like
-3. Fill the `training/facts` folder with as many `text` documents as you can containing information about anything including dummy credentials etc
-4. Edit the `master.txt` file to represent who you want the bot to pretend to be
-5. Click **Run**, select option `1`
-6. To chat with the bot, once you've one the training, select option `2`
+3. Fill the `training/facts` folder with as many `text` documents as you can containing information about anything including d
+4. ummy credentials etc
+5. Edit the `master.txt` file to represent who you want the bot to pretend to be
+6. Click **Run**, select option `1`
+7. To chat with the bot, once you've one the training, select option `2`
 
 # Screenshots
 [![Damn-Vulnerable-Creditcard.png](https://i.postimg.cc/DZX3K70V/Damn-Vulnerable-Creditcard.png)](https://postimg.cc/HcdhwDb3)
-
-[![Damnvulnerable-SSRF.png](https://i.postimg.cc/KznpNj4Y/Damnvulnerable-SSRF.png)](https://postimg.cc/2bSxjzQp)
 
 [![Vulnerable-LLM.png](https://i.postimg.cc/RFQGtYb6/Vulnerable-LLM.png)](https://postimg.cc/dk38P5Fw)
 
