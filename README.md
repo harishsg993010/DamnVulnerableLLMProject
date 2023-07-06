@@ -11,6 +11,18 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 5. Click **Run**, select option `1`
 6. To chat with the bot, once you've one the training, select option `2`
 
+# OWASP top 10 LLM Vulnerabilities in this application
+
+1. Prompt injection
+2. Sensitive Data Disclosure on LLM
+3. Unauthorised code injection on LLM
+4. improper access control on LLM APIs
+5. LLM Model poisoning (Undocumented in the writeup for some reason so find it on your own)  
+
+# Writeup for Reference 
+
+https://medium.com/@harishhacker3010/art-of-hacking-llm-apps-a22cf60a523b
+
 # Credit
 
 All based on the [Amjad Masad Chat bot](https://ai.repl.page) by IronCladDev on Replit
