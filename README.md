@@ -15,7 +15,6 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 # Screenshots
 [![Damn-Vulnerable-Creditcard.png](https://i.postimg.cc/DZX3K70V/Damn-Vulnerable-Creditcard.png)](https://postimg.cc/HcdhwDb3)
 
-[![Vulnerable-LLM.png](https://i.postimg.cc/RFQGtYb6/Vulnerable-LLM.png)](https://postimg.cc/dk38P5Fw)
 
 [![Damnvulnerable-LLM.png](https://i.postimg.cc/FK0xtqvW/Damnvulnerable-LLM.png)](https://postimg.cc/062SDVbD)
 
