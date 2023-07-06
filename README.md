@@ -2,12 +2,20 @@
 
 This project is designed for Security Researchers to enhance their LLM hacking skills and for LLM Companies to secure their AI model and System against attackers
 
+# CTF Insructions
+
+1. Fork https://replit.com/@hxs220034/DamnVulnerableLLMApplication-Demo on another replit
+2. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
+3. Run Replit and Enter 3  for CTF Mode
+4. Make console to spill flags and secrets in text and DM me SS on twitter @CoderHarish
+5. You can also read Writeup included in bottom for more challenges
+
+
 # Set Up
 
 1. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
 2. Make up and `API_KEY` for the JSON API, this can just be something like a password if you'd like
-3. Fill the `training/facts` folder with as many `text` documents as you can containing information about anything including d
-4. ummy credentials etc
+3. Fill the `training/facts` folder with as many `text` documents as you can containing information about anything including dummy credentials etc
 5. Edit the `master.txt` file to represent who you want the bot to pretend to be
 6. Click **Run**, select option `1`
 7. To chat with the bot, once you've one the training, select option `2`
