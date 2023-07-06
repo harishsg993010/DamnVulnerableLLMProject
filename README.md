@@ -17,7 +17,7 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 2. Sensitive Data Disclosure on LLM
 3. Unauthorised code injection on LLM
 4. improper access control on LLM APIs
-5. LLM Model poisoning (Undocumented in the writeup for some reason so find it on your own)  
+5. LLM Model poisoning (Undocumented in the writeup for a reason so find it on your own)  
 
 # Writeup for Reference 
 
