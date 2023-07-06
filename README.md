@@ -6,7 +6,7 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 
 1. Fork https://replit.com/@hxs220034/DamnVulnerableLLMApplication-Demo on another replit
 2. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
-3. Run Replit and Enter 3  for CTF Mode
+3. Run Replit annd choose 1 and then Enter 3  for CTF Mode
 4. Make console to spill flags and secrets in text and DM me SS on twitter @CoderHarish
 5. You can also read Writeup included in bottom for more challenges
 
