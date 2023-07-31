@@ -12,6 +12,7 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 6. You can also check txt files in training folder for flags and secrets strings given that main goal of ctf is prompt injection
 
 
+
 # Set Up
 
 1. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
