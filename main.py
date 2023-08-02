@@ -1,6 +1,4 @@
 import os
-# This wrapper automatically loads the API
-
 import sys
 import select
 import time
@@ -14,8 +12,7 @@ else:
   print("== OPENAI + REPLIT CUSTOM BOT==")
   print("You have five seconds to select an option")
   print()
-  print("1: Train Model\n2: Talk to your Bot\n3: Run API server (Default)\n> ",
-        end="")
+  print("1: Train Model\n2: Talk to your Bot\n3: Prompt Injection CTF MODE\n4: AISafety Bypass CTF MODE\n>",end="")
 
   i, o, e = select.select([sys.stdin], [], [], 10)
   print()
@@ -32,6 +29,14 @@ else:
       print("BOT CONVERSATION MODE")
       import process
       process.runPrompt()
+    elif choice == "3":
+      print("Prompt Injection CTF MODE")
+      import level2
+      level2.runPrompt()
+    elif choice == "4":
+      print("AISafety Bypass CTF MODE")
+      import level3
+      level3.runPrompt()
     else:
       print("Booting into API Server…")
       time.sleep(1)
@@ -57,3 +62,4 @@ else:
     while True:
       line = p.stdout.readline()
       if not line: break
+
