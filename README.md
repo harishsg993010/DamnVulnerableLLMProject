@@ -12,6 +12,12 @@ This project is designed for Security Researchers to enhance their LLM hacking s
 6. You can also check txt files in training folder for flags and secrets strings given that main goal of ctf is prompt injection
 
 
+# AI Safety Bypass CTF
+1. Fork https://replit.com/@hxs220034/DamnVulnerableLLMApplication-Demo on another replit
+2. Get your OpenAI API key and add it **Secrets** as `OPENAI_API_KEY`
+3. Run Replit and choose 1 for training and then Enter 4  for CTF Mode
+4. Bypass the AI Safety filter  and DM me SS on twitter @CoderHarish for verification
+
 
 # Set Up
 
